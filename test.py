@@ -645,6 +645,28 @@ class BinaryHeap:
         self.heap.append(value)
         self._heap_up(len(self.heap) - 1)
 
+    def remove(self):
+        if not self.heap:
+            return None
+        if len(self.heap) == 1:
+            return self.heap.pop()
+        root = self.heap[0]
+        self.heap[0] = self.heap.pop()
+        self._heap_down(0)
+        return root
+    
+    def _heap_down(self, index):
+        left = 2 * index + 1
+        right = 2 * index + 2
+        largest = index
+        if left < len(self.heap) and self.heap[left] > self.heap[largest]:
+            largest = left
+        if right < len(self.heap) and self.heap[right] > self.heap[largest]:
+            largest = right
+        if largest != index:
+            self.heap[index], self.heap[largest] = self.heap[largest], self.heap[index]
+            self._heap_down(largest)    
+    
     def _heap_up(self, index):
         parent = (index - 1) // 2
         if index <= 0:
